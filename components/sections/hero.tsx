@@ -17,14 +17,19 @@ export function Hero() {
     .join("");
 
   return (
-    <section aria-labelledby="hero-heading" className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 lg:pt-40 lg:pb-28">
+    // On desktop the hero fills the first screen and centres its content vertically.
+    <section
+      id="home"
+      aria-labelledby="hero-heading"
+      className="relative isolate flex items-center overflow-hidden pt-28 pb-16 sm:pt-32 sm:pb-20 lg:min-h-svh lg:pt-24 lg:pb-12"
+    >
       {/* Decorative glow, clipped by the section so it never causes horizontal scroll. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute -top-48 left-1/2 -z-10 h-[34rem] w-[min(64rem,180vw)] -translate-x-1/2 rounded-full bg-radial from-brand-from/15 via-brand-via/5 to-transparent blur-2xl dark:from-brand-from/25"
       />
 
-      <Container className="grid items-center gap-12 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.9fr)] lg:gap-16">
+      <Container className="grid items-center gap-12 md:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] md:gap-10 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-16 xl:gap-20">
         <Stagger stagger={0.09}>
           {availability.status && (
             <StaggerItem>
@@ -85,20 +90,27 @@ export function Hero() {
           </StaggerItem>
         </Stagger>
 
-        <ScaleIn delay={0.15} className="mx-auto w-full max-w-[18rem] sm:max-w-xs md:max-w-none">
-          <div className="relative">
+        {/*
+          Mobile/tablet: width-driven. Desktop: height-driven, capped to the space
+          below the navbar so the photo never runs past the fold; width follows the 4:5 ratio.
+        */}
+        <ScaleIn
+          delay={0.15}
+          className="mx-auto w-full max-w-[18rem] sm:max-w-xs md:max-w-none lg:aspect-[4/5] lg:h-[min(30rem,calc(100svh-10rem))] lg:w-auto xl:h-[min(34rem,calc(100svh-10rem))]"
+        >
+          <div className="relative lg:h-full">
             <div
               aria-hidden="true"
               className="absolute -inset-2.5 rotate-3 rounded-[2rem] bg-brand opacity-40 blur-md sm:-inset-3"
             />
-            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-muted shadow-lifted">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] border border-border bg-muted shadow-lifted lg:h-full lg:w-full">
               {photo ? (
                 <Image
                   src={photo}
                   alt={profileImageAlt}
                   fill
                   preload
-                  sizes="(min-width: 1024px) 440px, (min-width: 768px) 300px, 288px"
+                  sizes="(min-width: 1024px) 440px, (min-width: 768px) 320px, 288px"
                   className="object-cover object-[50%_30%]"
                 />
               ) : (

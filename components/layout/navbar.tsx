@@ -30,8 +30,9 @@ export function Navbar() {
 
   // Highlight the link for whichever section is in the middle of the viewport.
   useEffect(() => {
-    const sections = navLinks
-      .map(({ href }) => document.querySelector<HTMLElement>(href))
+    // "#home" (the hero) is observed too, so no link is highlighted while it's in view.
+    const sections = ["#home", ...navLinks.map(({ href }) => href)]
+      .map((selector) => document.querySelector<HTMLElement>(selector))
       .filter((el): el is HTMLElement => el !== null);
 
     const observer = new IntersectionObserver(
